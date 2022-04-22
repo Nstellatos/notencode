@@ -1,11 +1,11 @@
 import { useTypedSelector } from './use-typed-selector';
 
 export const useCumulativeCode = (cellId: string) => {
-  return useTypedSelector((state) => {
-    const { data, order } = state.cells;
-    const orderedCells = order.map((id) => data[id]);
+	return useTypedSelector((state) => {
+		const { data, order } = state.cells;
+		const orderedCells = order.map((id) => data[id]);
 
-    const showFunc = `
+		const showFunc = `
     import _React from 'react';
     import _ReactDOM from 'react-dom';
     var show = (value) => {
@@ -22,21 +22,21 @@ export const useCumulativeCode = (cellId: string) => {
       }
     };
   `;
-    const showFuncNoop = 'var show = () => {}';
-    const cumulativeCode = [];
-    for (let c of orderedCells) {
-      if (c.type === 'code') {
-        if (c.id === cellId) {
-          cumulativeCode.push(showFunc);
-        } else {
-          cumulativeCode.push(showFuncNoop);
-        }
-        cumulativeCode.push(c.content);
-      }
-      if (c.id === cellId) {
-        break;
-      }
-    }
-    return cumulativeCode;
-  }).join('\n');
+		const showFuncNoop = 'var show = () => {}';
+		const cumulativeCode = [];
+		for (let c of orderedCells) {
+			if (c.type === 'code') {
+				if (c.id === cellId) {
+					cumulativeCode.push(showFunc);
+				} else {
+					cumulativeCode.push(showFuncNoop);
+				}
+				cumulativeCode.push(c.content);
+			}
+			if (c.id === cellId) {
+				break;
+			}
+		}
+		return cumulativeCode;
+	}).join('\n');
 };
